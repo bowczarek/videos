@@ -1,6 +1,5 @@
 package bowczarek.videos.domain;
 
-
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
@@ -31,7 +30,7 @@ public class VideoFile {
 
     @OneToOne
     @JoinColumn(name = "videoMediaInfoId")
-    @RestResource(path = "libraryAddress", rel="metadata")
+    @RestResource(path = "metadata", rel = "metadata")
     private VideoMediaInfo videoMediaInfo;
 
     protected VideoFile() {

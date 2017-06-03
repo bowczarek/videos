@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
+import org.springframework.util.FileSystemUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -11,7 +12,6 @@ import java.net.MalformedURLException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.stream.Stream;
 
 /**
  * Created by bowczarek on 02.06.2017.
@@ -27,30 +27,18 @@ public class FileSystemStorageService implements StorageService {
     }
 
     @Override
-    public Stream<Path> getAll() {
+    public Resource getAsResource(String filePath) {
         try {
-            return Files.walk(this.rootLocation, 1)
-                    .filter(path -> !path.equals(this.rootLocation))
-                    .map(path -> this.rootLocation.relativize(path));
-        } catch (IOException e) {
-            throw new StorageException("Couldn't read file", e);
-        }
-    }
-
-    @Override
-    public Resource getAsResource(String filename) {
-        try {
-            Path file = rootLocation.resolve(filename);
+            Path file = Paths.get(filePath);
             Resource resource = new UrlResource(file.toUri());
-            if(resource.exists() || resource.isReadable()) {
+            if (resource.exists() || resource.isReadable()) {
                 return resource;
-            }
-            else {
-                throw new FileNotFoundException("Could not read file: " + filename);
+            } else {
+                throw new FileNotFoundException("Could not read file: " + filePath);
 
             }
         } catch (MalformedURLException e) {
-            throw new FileNotFoundException("Could not read file: " + filename, e);
+            throw new FileNotFoundException("Could not read file: " + filePath, e);
         }
     }
 
@@ -71,15 +59,8 @@ public class FileSystemStorageService implements StorageService {
     }
 
     @Override
-    public Path getPathByFileName(String filename) {
-        try {
-            return Files.walk(this.rootLocation, 1)
-                    .filter(path -> !path.equals(this.rootLocation) && path.getFileName().toString().equals(filename))
-                    .findAny()
-                    .get();
-        } catch (IOException e) {
-            throw new StorageException("Couldn't read file", e);
-        }
+    public void deleteAll() {
+        FileSystemUtils.deleteRecursively(rootLocation.toFile());
     }
 
     @Override

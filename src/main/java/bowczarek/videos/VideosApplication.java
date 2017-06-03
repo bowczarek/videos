@@ -1,7 +1,6 @@
 package bowczarek.videos;
 
 import bowczarek.videos.codec.FFmpegProperties;
-import bowczarek.videos.codec.FFmpegService;
 import bowczarek.videos.storage.StorageProperties;
 import bowczarek.videos.storage.StorageService;
 import org.springframework.boot.CommandLineRunner;
@@ -16,14 +15,14 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 @EnableJpaRepositories
 public class VideosApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(VideosApplication.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(VideosApplication.class, args);
+    }
 
     @Bean
     CommandLineRunner init(StorageService storageService) {
         return (args) -> {
-//            storageService.deleteAll();
+            storageService.deleteAll();
             storageService.init();
         };
     }

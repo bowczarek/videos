@@ -33,16 +33,15 @@ public class FFmpegService implements CodecService {
             FFmpegProbeResult probeResult = ffprobe.probe(file.toString());
             FFmpegFormat format = probeResult.getFormat();
 
-            // TODO: handle or  return Optional, log & throw custom exception
             FFmpegStream videoStream = probeResult.getStreams().stream()
                     .filter(ffmpegStream -> ffmpegStream.codec_type == FFmpegStream.CodecType.VIDEO)
                     .findFirst()
-                    .get();
+                    .orElseThrow(() -> new FFmpegException("Couldn't find any video stream in probe"));
 
             FFmpegStream audioStream = probeResult.getStreams().stream()
                     .filter(ffmpegStream -> ffmpegStream.codec_type == FFmpegStream.CodecType.AUDIO)
                     .findFirst()
-                    .get();
+                    .orElseThrow(() -> new FFmpegException("Couldn't find any audio codec in probe"));
 
             videoInfo.setSize(format.size);
             videoInfo.setDuration(format.duration);
@@ -54,7 +53,7 @@ public class FFmpegService implements CodecService {
             return videoInfo;
 
         } catch (IOException e) {
-            e.printStackTrace();
+            new FFmpegException("Couldn't read file", e);
         }
 
         return null;
