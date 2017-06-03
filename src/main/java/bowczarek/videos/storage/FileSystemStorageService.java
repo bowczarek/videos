@@ -71,6 +71,18 @@ public class FileSystemStorageService implements StorageService {
     }
 
     @Override
+    public Path getPathByFileName(String filename) {
+        try {
+            return Files.walk(this.rootLocation, 1)
+                    .filter(path -> !path.equals(this.rootLocation) && path.getFileName().toString().equals(filename))
+                    .findAny()
+                    .get();
+        } catch (IOException e) {
+            throw new StorageException("Couldn't read file", e);
+        }
+    }
+
+    @Override
     public void init() {
         try {
             if (Files.notExists(rootLocation)) {

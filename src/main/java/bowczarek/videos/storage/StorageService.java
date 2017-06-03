@@ -16,5 +16,7 @@ public interface StorageService {
 
     Path save(MultipartFile file);
 
+    Path getPathByFileName(String filename);
+
     void init();
 }

@@ -1,10 +1,12 @@
 package bowczarek.videos.codec;
 
-import bowczarek.videos.domain.VideoInfo;
+import bowczarek.videos.domain.VideoMediaInfo;
 import net.bramp.ffmpeg.FFprobe;
 import net.bramp.ffmpeg.probe.FFmpegFormat;
 import net.bramp.ffmpeg.probe.FFmpegProbeResult;
 import net.bramp.ffmpeg.probe.FFmpegStream;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.nio.file.Path;
@@ -12,17 +14,26 @@ import java.nio.file.Path;
 /**
  * Created by bowczarek on 02.06.2017.
  */
+@Service
 public class FFmpegService implements CodecService {
 
+    private final FFmpegProperties ffmpegProperties;
+
+    @Autowired
+    public FFmpegService(FFmpegProperties ffmpegProperties) {
+        this.ffmpegProperties = ffmpegProperties;
+    }
+
     @Override
-    public VideoInfo getMediaInformation(Path file) {
+    public VideoMediaInfo getMediaInformation(Path file) {
         FFprobe ffprobe = null;
         try {
-            VideoInfo videoInfo = new VideoInfo();
-            ffprobe = new FFprobe("");
-            FFmpegProbeResult probeResult = ffprobe.probe("input.mp4");
+            VideoMediaInfo videoInfo = new VideoMediaInfo();
+            ffprobe = new FFprobe(this.ffmpegProperties.getProbePath());
+            FFmpegProbeResult probeResult = ffprobe.probe(file.toString());
             FFmpegFormat format = probeResult.getFormat();
 
+            // TODO: handle or  return Optional, log & throw custom exception
             FFmpegStream videoStream = probeResult.getStreams().stream()
                     .filter(ffmpegStream -> ffmpegStream.codec_type == FFmpegStream.CodecType.VIDEO)
                     .findFirst()
@@ -33,12 +44,12 @@ public class FFmpegService implements CodecService {
                     .findFirst()
                     .get();
 
-            videoInfo.size = format.size;
-            videoInfo.duration = format.duration;
-            videoInfo.videoBitRate = videoStream.bit_rate;
-            videoInfo.videoCodecName = videoStream.codec_name;
-            videoInfo.audioBitRate = audioStream.bit_rate;
-            videoInfo.audioCodecName = audioStream.codec_name;
+            videoInfo.setSize(format.size);
+            videoInfo.setDuration(format.duration);
+            videoInfo.setVideoBitRate(videoStream.bit_rate);
+            videoInfo.setVideoCodecName(videoStream.codec_name);
+            videoInfo.setAudioBitRate(audioStream.bit_rate);
+            videoInfo.setAudioCodecName(audioStream.codec_name);
 
             return videoInfo;
 

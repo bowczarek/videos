@@ -11,6 +11,6 @@ public class HomeController {
 
     @GetMapping("/")
     public String get() {
-        return "redirect:/videos";
+        return "upload";
     }
 }
