@@ -53,9 +53,7 @@ public class FFmpegService implements CodecService {
             return videoInfo;
 
         } catch (IOException e) {
-            new FFmpegException("Couldn't read file", e);
+            throw new FFmpegException("Couldn't read file", e);
         }
-
-        return null;
     }
 }

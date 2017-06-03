@@ -12,7 +12,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 @ConfigurationProperties("ffmpeg")
 public class FFmpegProperties {
 
-    private String mpegPath = "c:\\tools\\ffmpeg\\bin\\ffmpeg.exe";
+    private String mpegPath = "ffmpeg\\bin\ffmpeg.exe";
 
-    private String probePath = "c:\\tools\\ffmpeg\\bin\\ffprobe.exe";
+    private String probePath = "ffmpeg\\bin\\ffprobe.exe";
 }
