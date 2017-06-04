@@ -9,6 +9,5 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public interface VideoFileRepository extends PagingAndSortingRepository<VideoFile, Long> {
-
-    public VideoFile findById(@Param("id") long id);
+    VideoFile findById(@Param("id") long id);
 }
