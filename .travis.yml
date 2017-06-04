@@ -13,5 +13,3 @@ deploy:
   provider: script
   script: "cp .travis.settings.xml $HOME/.m2/settings.xml && mvn package docker:build -DpushImage"
   skip_cleanup: true
-  on:
-    tags: true
