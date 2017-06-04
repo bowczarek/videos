@@ -11,6 +11,7 @@ import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -87,6 +88,7 @@ public class VideoFileController {
     }
 
     @PostMapping("/videos")
+    @Transactional
     public Iterable<VideoFile> upload(@RequestParam("file") MultipartFile file) {
 
         if (!isContentTypeAllowed(file.getContentType())) {
