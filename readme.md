@@ -18,6 +18,8 @@ By default rest api accepts only up to **25mb** files. However, you can change t
     spring.http.multipart.max-request-size=25MB
 ```
 
+Sample videos can be downloaded from http://www.sample-videos.com/.
+
 ## Technology stack
 * [Spring Boot](https://projects.spring.io/spring-boot/) with following [starters](https://github.com/spring-projects/spring-boot/tree/master/spring-boot-starters)
     * Web
@@ -26,9 +28,10 @@ By default rest api accepts only up to **25mb** files. However, you can change t
     * Thymeleaf
     * Data Rest
     * OAuth2
-* Maven
-* Docker and [Docker Maven Plugin](https://github.com/spotify/docker-maven-plugin)
+* [Maven](http://maven.apache.org/)
+* [Docker](https://www.docker.com/) and [Docker Maven Plugin](https://github.com/spotify/docker-maven-plugin)
 * [FFmpeg wrapper](https://github.com/bramp/ffmpeg-cli-wrapper)
+* [HyperSQL](http://hsqldb.org/)
 
 I used IntelliJ IDEA Community Edition with following plugins:
 * [Lombok](https://github.com/mplushnikov/lombok-intellij-plugin)
