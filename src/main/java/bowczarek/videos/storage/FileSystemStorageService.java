@@ -49,16 +49,16 @@ public class FileSystemStorageService implements StorageService {
     }
 
     @Override
-    public Path save(MultipartFile file) {
+    public Path save(MultipartFile file, Long id) {
         try {
             if (file.isEmpty()) {
-                String msg = "Failed to store empty file " + file.getOriginalFilename();
+                String msg = "Cannot store empty file " + file.getOriginalFilename();
                 logger.error(msg);
-
                 throw new StorageException(msg);
             }
 
-            Path filePath = this.rootLocation.resolve(file.getOriginalFilename());
+            Files.createDirectory(this.rootLocation.resolve(id.toString()));
+            Path filePath = this.rootLocation.resolve(Paths.get(id.toString(), file.getOriginalFilename()));
             Files.copy(file.getInputStream(), filePath);
 
             return filePath;

@@ -17,6 +17,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -84,6 +85,7 @@ public class VideoFileController {
     }
 
     @PostMapping
+    @Transactional
     public ResponseEntity<Void> upload(@RequestParam("file") MultipartFile file) {
 
         if (!isContentTypeAllowed(file.getContentType())) {
@@ -94,11 +96,14 @@ public class VideoFileController {
             throw new NotAllowedFormatException(msg);
         }
 
-        Path path = storageService.save(file);
+        VideoFile videoFile = new VideoFile(file.getOriginalFilename(), "");
+        videoFileRepository.save(videoFile);
+
+        Path path = storageService.save(file, videoFile.getId());
+
+        videoFile.setFilePath(path.toString());
 
         VideoMediaInfo info = ffmpegService.getMediaInformation(path);
-
-        VideoFile videoFile = new VideoFile(path.getFileName().toString(), path.toString());
         videoFile.setSize(info.getSize());
         videoFile.setDuration(info.getDuration());
         videoFile.setVideoCodecName(info.getVideoCodecName());

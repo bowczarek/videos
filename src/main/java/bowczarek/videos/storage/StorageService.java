@@ -12,7 +12,7 @@ public interface StorageService {
 
     Resource getAsResource(String filename);
 
-    Path save(MultipartFile file);
+    Path save(MultipartFile file, Long id);
 
     void deleteAll();
 

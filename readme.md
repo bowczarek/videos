@@ -17,7 +17,9 @@ By default rest api accepts only up to **25mb** files. However, you can change t
     spring.http.multipart.max-request-size=25MB
 ```
 
-Sample videos can be downloaded from http://www.sample-videos.com/.
+HATEOS is enabled.
+
+Uploaded files are stored locally. Sample videos can be downloaded from http://www.sample-videos.com/.
 
 ## Technology stack
 * [Spring Boot](https://projects.spring.io/spring-boot/) with following [starters](https://github.com/spring-projects/spring-boot/tree/master/spring-boot-starters)
