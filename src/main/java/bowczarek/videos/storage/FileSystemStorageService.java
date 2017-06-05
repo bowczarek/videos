@@ -1,5 +1,7 @@
 package bowczarek.videos.storage;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
@@ -19,6 +21,8 @@ import java.nio.file.Paths;
 @Service
 public class FileSystemStorageService implements StorageService {
 
+    private final Logger logger = LoggerFactory.getLogger(FileSystemStorageService.class);
+
     private final Path rootLocation;
 
     @Autowired
@@ -34,10 +38,12 @@ public class FileSystemStorageService implements StorageService {
             if (resource.exists() || resource.isReadable()) {
                 return resource;
             } else {
-                throw new FileNotFoundException("Could not read file: " + filePath);
-
+                String msg = "Could not read file: " + filePath;
+                logger.error(msg);
+                throw new FileNotFoundException(msg);
             }
         } catch (MalformedURLException e) {
+            logger.error(e.getMessage(), e);
             throw new FileNotFoundException("Could not read file: " + filePath, e);
         }
     }
@@ -46,7 +52,10 @@ public class FileSystemStorageService implements StorageService {
     public Path save(MultipartFile file) {
         try {
             if (file.isEmpty()) {
-                throw new StorageException("Failed to store empty file " + file.getOriginalFilename());
+                String msg = "Failed to store empty file " + file.getOriginalFilename();
+                logger.error(msg);
+
+                throw new StorageException(msg);
             }
 
             Path filePath = this.rootLocation.resolve(file.getOriginalFilename());
@@ -54,6 +63,7 @@ public class FileSystemStorageService implements StorageService {
 
             return filePath;
         } catch (IOException e) {
+            logger.error(e.getMessage(), e);
             throw new StorageException("Failed to store file " + file.getOriginalFilename(), e);
         }
     }
@@ -70,6 +80,7 @@ public class FileSystemStorageService implements StorageService {
                 Files.createDirectory(rootLocation);
             }
         } catch (IOException e) {
+            logger.error(e.getMessage(), e);
             throw new StorageException("Couldn't create directory", e);
         }
     }

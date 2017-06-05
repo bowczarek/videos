@@ -7,9 +7,8 @@ There are following endpoints exposed:
 ```
     GET  /videos - retrieves list of uploaded videos
     POST /videos - uploads video file
-    GET  /videos/{id} - retrieves selected video file information
-    GET  /videos/{id}/stream - downloads selected file
-    GET  /videos/{id}/metadata - retrieves video file metadata information (size, duration, video_codec etc)
+    GET  /videos/{id} - retrieves selected video file information (name, filePath, size, duration, video_codec etc)
+    GET  /videos/{id}/download - downloads selected file
 ```
 
 By default rest api accepts only up to **25mb** files. However, you can change this settings in *application.properties* file:

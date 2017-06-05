@@ -1,6 +1,5 @@
-package bowczarek.videos;
+package bowczarek.videos.api;
 
-import bowczarek.videos.domain.EntityNotFoundException;
 import bowczarek.videos.storage.FileNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ControllerAdvice;

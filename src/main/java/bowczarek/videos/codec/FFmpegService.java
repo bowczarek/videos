@@ -1,10 +1,11 @@
 package bowczarek.videos.codec;
 
-import bowczarek.videos.domain.VideoMediaInfo;
 import net.bramp.ffmpeg.FFprobe;
 import net.bramp.ffmpeg.probe.FFmpegFormat;
 import net.bramp.ffmpeg.probe.FFmpegProbeResult;
 import net.bramp.ffmpeg.probe.FFmpegStream;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,6 +17,8 @@ import java.nio.file.Path;
  */
 @Service
 public class FFmpegService implements CodecService {
+
+    private final Logger logger = LoggerFactory.getLogger(FFmpegService.class);
 
     private final FFmpegProperties ffmpegProperties;
 
@@ -53,7 +56,11 @@ public class FFmpegService implements CodecService {
             return videoInfo;
 
         } catch (IOException e) {
+            logger.error(e.getMessage(), e);
             throw new FFmpegException("Couldn't read file", e);
+        } catch (FFmpegException e) {
+            logger.error(e.getMessage());
+            throw e;
         }
     }
 }

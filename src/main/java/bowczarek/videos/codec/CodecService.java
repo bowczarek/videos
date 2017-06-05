@@ -1,7 +1,5 @@
 package bowczarek.videos.codec;
 
-import bowczarek.videos.domain.VideoMediaInfo;
-
 import java.nio.file.Path;
 
 /**

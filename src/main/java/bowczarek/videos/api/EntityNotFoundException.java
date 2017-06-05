@@ -1,4 +1,4 @@
-package bowczarek.videos.domain;
+package bowczarek.videos.api;
 
 /**
  * Created by bowczarek on 03.06.2017.
