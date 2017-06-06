@@ -72,7 +72,7 @@ in *application-local.properties* file.
 
 Run:
 ``` bash
-$ mvn spring-boot:run -Dspring.profiles.active={local}
+$ mvn spring-boot:run -Dspring.profiles.active=local
 ```
 to start embedded Tomcat server. Your application should be available at http://localhost:8080.
 ## Running the app locally in docker container
@@ -102,3 +102,9 @@ http://videos-demo.c7e45562.svc.dockerapp.io
 Automatic build & deployment is configured in [Travis CI](https://travis-ci.org/bowczarek/videos) & [Docker Cloud](https://cloud.docker.com). Each commit will trigger a build that will push
 the latest docker image to [bartoszowczarek/videos](https://hub.docker.com/r/bartoszowczarek/videos/) repo in *Docker Hub*
 where *Docker Cloud* service will automatically deploy latest image to the demo service endpoint.
+## TODO
+* API versioning
+* Paging & Sorting for GET /videos endpoint
+* S3 / Azure Blob Storage for uploaded files
+* Logging configuration
+* More tests (Storage & FFmpegService)
